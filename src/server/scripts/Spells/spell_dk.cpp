@@ -48,7 +48,10 @@ enum DeathKnightSpells
     SPELL_DK_UNHOLY_PRESENCE                    = 48265,
     SPELL_DK_IMPROVED_UNHOLY_PRESENCE_TRIGGERED = 63622,
     SPELL_DK_ITEM_SIGIL_VENGEFUL_HEART          = 64962,
-    SPELL_DK_ITEM_T8_MELEE_4P_BONUS             = 64736
+    SPELL_DK_ITEM_T8_MELEE_4P_BONUS             = 64736,
+    SPELL_DK_GLYPH_PATH_OF_FROST                = 59307,
+    SPELL_DK_PATH_OF_FROST                      = 3714,
+    SPELL_DK_GLYPH_PATH_OF_FROST_EFF            = 93061
 };
 
 enum DeathKnightSpellIcons
@@ -1005,6 +1008,49 @@ class spell_dk_will_of_the_necropolis : public SpellScriptLoader
         }
 };
 
+// 59307 - Glyph of Path of Frost 
+class spell_dk_path_of_frost : public SpellScriptLoader
+{
+    public:
+        spell_dk_path_of_frost() : SpellScriptLoader("spell_dk_path_of_frost") { }
+
+        class spell_dk_path_of_frost_AuraScript : public AuraScript
+        {
+            PrepareAuraScript(spell_dk_path_of_frost_AuraScript);
+
+            bool Validate(SpellInfo const* /*spellInfo*/)
+            {
+                if (!sSpellMgr->GetSpellInfo(SPELL_DK_PATH_OF_FROST))
+                    return false;
+                return true;
+            }
+
+            void HandleEffectApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
+            {
+               if (Unit* caster = GetCaster())
+                   if (caster->HasAura(SPELL_DK_GLYPH_PATH_OF_FROST))
+                       caster->CastSpell(caster, SPELL_DK_GLYPH_PATH_OF_FROST_EFF, true);
+            }
+
+            void HandleEffectRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
+            {
+                if (Unit* caster = GetCaster())
+                    caster->RemoveAura(SPELL_DK_GLYPH_PATH_OF_FROST_EFF);
+            }
+
+            void Register()
+            {
+                AfterEffectApply += AuraEffectApplyFn(spell_dk_path_of_frost_AuraScript::HandleEffectApply, EFFECT_2, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL_OR_REAPPLY_MASK);
+                AfterEffectRemove += AuraEffectRemoveFn(spell_dk_path_of_frost_AuraScript::HandleEffectRemove, EFFECT_2, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL_OR_REAPPLY_MASK);
+            }
+        };
+
+        AuraScript* GetAuraScript() const
+        {
+            return new spell_dk_path_of_frost_AuraScript();
+        }
+};
+
 void AddSC_deathknight_spell_scripts()
 {
     new spell_dk_anti_magic_shell_raid();
@@ -1027,4 +1073,5 @@ void AddSC_deathknight_spell_scripts()
     new spell_dk_spell_deflection();
     new spell_dk_vampiric_blood();
     new spell_dk_will_of_the_necropolis();
+    new spell_dk_path_of_frost();
 }

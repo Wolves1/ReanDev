@@ -327,6 +327,7 @@ Milestone7.0: Código custom, utilitario y caracteristicas interesantes varias.
 3.1.9  - 16/12/2014: DK: Fix spell Dark Simulacrum, previniendo que pueda usar spells que no debería por WoWSource434 y modificado por Gildor
 3.1.10 - 25/12/2014: DK: Fix spell Blood Parasite, ahora los Bloodworm no sanarán con cada golpe y explotarán sanando a los aliados cercanos un 10% de la vida del gusano por stack por Arkcore y modificado por Gildor
 3.1.11 - 27/12/2014: DK: Fix spell Blood Parasite, ahora los Bloodworm tendrán el 25% de la vida del DK por Gildor
+3.1.12 - 14/01/2015: DK: Fix glyph Path of Frost, reduce el daño de caída del DK por Wolves
  - 3.2 Druid -
 3.2.1  - 18/07/2014: Druida: Fix spell Dreamstate, ahora aumentará la regeneración de maná de Innervate por Gildor
 3.2.2  - 19/07/2014: Druida: Fix spell Fungal Growth, ahora al morir los Treants o detonar los Wild Mushroom aparecerá Fungal Growth por Gildor
